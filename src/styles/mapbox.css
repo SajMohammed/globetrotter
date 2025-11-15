@@ -1,0 +1,68 @@
+/**
+ * Mapbox GL JS Styles
+ *
+ * Required Mapbox CSS and custom map styling.
+ */
+
+/* Import Mapbox GL JS core styles (REQUIRED) */
+@import "mapbox-gl/dist/mapbox-gl.css";
+
+/* Custom map styling */
+.mapboxgl-map {
+  font-family: inherit;
+}
+
+/* Improve control button styling */
+.mapboxgl-ctrl-group button {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.mapboxgl-ctrl-group button:hover {
+  background-color: rgb(239 246 255);
+}
+
+/* Custom popup styling */
+.mapboxgl-popup-content {
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  padding: 1rem;
+  max-width: 300px;
+}
+
+.mapboxgl-popup-close-button {
+  color: rgb(107 114 128);
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  font-size: 20px;
+  padding: 0.5rem;
+}
+
+.mapboxgl-popup-close-button:hover {
+  color: rgb(55 65 81);
+}
+
+/* Marker styling */
+.mapboxgl-marker {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.mapboxgl-marker:hover {
+  transform: scale(1.1);
+}
+
+/* Attribution styling */
+.mapboxgl-ctrl-attrib {
+  background-color: rgba(255, 255, 255, 0.75);
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+/* Scale control styling */
+.mapboxgl-ctrl-scale {
+  background-color: rgba(255, 255, 255, 0.75);
+  border-color: rgb(209 213 219);
+}
