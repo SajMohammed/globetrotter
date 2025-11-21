@@ -6,7 +6,7 @@
  */
 
 import mapboxgl from "mapbox-gl";
-import type { MapViewport } from "@/types";
+import type { MapViewport } from "@/features/map/types";
 import { ANIMATION_DURATION } from "@/config/constants";
 
 /**
@@ -258,9 +258,9 @@ export function calculateDistance(
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(toRadians(coord1[1])) *
-      Math.cos(toRadians(coord2[1])) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
+    Math.cos(toRadians(coord2[1])) *
+    Math.sin(dLon / 2) *
+    Math.sin(dLon / 2);
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;

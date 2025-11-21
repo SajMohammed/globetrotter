@@ -7,7 +7,7 @@
 
 import { useEffect } from "react";
 import type { Map as MapboxMap } from "mapbox-gl";
-import type { MapEventHandlers } from "@/types";
+import type { MapEventHandlers } from "@/features/map/types";
 
 /**
  * Hook for attaching event handlers to a Mapbox map

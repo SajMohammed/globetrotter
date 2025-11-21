@@ -100,11 +100,13 @@ export function isCountryInDataset(countryCode: string): boolean {
   return SAMPLE_COUNTRY_DATA.some((c) => c.countryCode === countryCode);
 }
 
+import type { ExpressionSpecification } from "mapbox-gl";
+
 /**
  * Create a Mapbox color expression for dataset countries
  * This maps country codes to their colors
  */
-export function createCountryColorExpression(): any[] {
+export function createCountryColorExpression(): ExpressionSpecification {
   const expression: any[] = ["match", ["get", "iso_3166_1_alpha_3"]];
 
   SAMPLE_COUNTRY_DATA.forEach((country) => {
@@ -115,5 +117,5 @@ export function createCountryColorExpression(): any[] {
   // Default: transparent (won't be visible)
   expression.push("rgba(0,0,0,0)");
 
-  return expression;
+  return expression as ExpressionSpecification;
 }

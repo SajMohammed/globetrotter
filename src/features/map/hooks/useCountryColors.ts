@@ -6,11 +6,11 @@
  */
 
 import { useEffect } from "react";
-import type { Map as MapboxMap } from "mapbox-gl";
+import type { Map as MapboxMap, ExpressionSpecification } from "mapbox-gl";
 
 interface UseCountryColorsOptions {
   countryCodes: string[]; // Array of country codes to highlight
-  colorExpression?: any[]; // Mapbox expression for coloring dataset countries
+  colorExpression?: ExpressionSpecification; // Mapbox expression for coloring dataset countries
   grayColor?: string; // Color for non-dataset countries
   grayOpacity?: number; // Opacity for gray overlay
   colorOpacity?: number; // Opacity for colored countries

@@ -9,7 +9,7 @@
 
 import { useEffect, useCallback, useState } from "react";
 import type { Map as MapboxMap } from "mapbox-gl";
-import type { DatasetConfig } from "@/types";
+import type { DatasetConfig } from "@/features/map/types";
 import { sourceExists, layerExists, removeLayer, removeSource } from "@/utils/mapbox";
 
 /**

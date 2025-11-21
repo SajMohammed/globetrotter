@@ -4,7 +4,7 @@
  * Centralized configuration values used throughout the application.
  */
 
-import type { MapViewport } from "@/types";
+import type { MapViewport } from "@/features/map/types";
 
 /**
  * Default map viewport - World view

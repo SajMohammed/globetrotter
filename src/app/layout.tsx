@@ -8,7 +8,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "@/styles/mapbox.css";
-import { ErrorBoundary } from "@/components/common/ErrorBoundary";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 export const metadata: Metadata = {
   title: "Mapbox Next.js App",

@@ -10,8 +10,8 @@
 "use client";
 
 import { useEffect } from "react";
-import type { MapProps } from "@/types";
-import { useMapbox } from "@/hooks";
+import type { MapProps } from "@/features/map/types";
+import { useMapbox } from "@/features/map/hooks";
 import { MAP_CONTAINER_STYLES } from "@/config/constants";
 
 /**

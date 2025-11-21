@@ -4,7 +4,7 @@
  * Helper functions for creating and validating Mapbox configurations.
  */
 
-import type { MapConfig, MapViewport } from "@/types";
+import type { MapConfig, MapViewport } from "@/features/map/types";
 import { DEFAULT_VIEWPORT, MAP_STYLES, ZOOM_CONSTRAINTS } from "@/config/constants";
 import { env } from "@/config/env";
 

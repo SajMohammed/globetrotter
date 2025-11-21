@@ -8,7 +8,7 @@
 
 import { useEffect } from "react";
 import mapboxgl from "mapbox-gl";
-import type { MapControlsConfig } from "@/types";
+import type { MapControlsConfig } from "@/features/map/types";
 
 interface MapControlsProps {
   map: mapboxgl.Map | null;

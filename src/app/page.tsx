@@ -9,11 +9,11 @@
 
 import { useState, useMemo, useCallback } from "react";
 import type { Map as MapboxMap } from "mapbox-gl";
-import { Map, MapControls, MapDataLayer } from "@/components/map";
+import { Map, MapControls, MapDataLayer } from "@/features/map/components";
 import { createDefaultMapConfig } from "@/utils/mapbox";
-import type { DatasetConfig } from "@/types";
+import type { DatasetConfig } from "@/features/map/types";
 import { LAYER_COLORS } from "@/config/constants";
-import { useCountryColors } from "@/hooks/useCountryColors";
+import { useCountryColors } from "@/features/map/hooks/useCountryColors";
 import {
   SAMPLE_COUNTRY_DATA,
   getCountryCodes,
@@ -173,64 +173,64 @@ export default function HomePage() {
         onError={handleMapError}
         style={{ width: "100%", height: "100%" }}
       >
-          {/* Add map controls when loaded */}
-          {map && isLoaded && (
-            <>
-              <MapControls
-                map={map}
-                config={{
-                  showNavigation: true,
-                  showGeolocate: true,
-                  showFullscreen: true,
-                  showScale: true,
-                  position: "top-right",
-                }}
-              />
+        {/* Add map controls when loaded */}
+        {map && isLoaded && (
+          <>
+            <MapControls
+              map={map}
+              config={{
+                showNavigation: true,
+                showGeolocate: true,
+                showFullscreen: true,
+                showScale: true,
+                position: "top-right",
+              }}
+            />
 
-              {/* Add world cities dataset */}
-              <MapDataLayer
-                map={map}
-                isLoaded={isLoaded}
-                dataset={WORLD_CITIES_DATASET}
-                onAdd={(id) => console.log("Dataset added:", id)}
-              />
-            </>
-          )}
-        </Map>
+            {/* Add world cities dataset */}
+            <MapDataLayer
+              map={map}
+              isLoaded={isLoaded}
+              dataset={WORLD_CITIES_DATASET}
+              onAdd={(id) => console.log("Dataset added:", id)}
+            />
+          </>
+        )}
+      </Map>
 
-        {/* Info Panel */}
-        {isLoaded && (
-          <div className="absolute top-4 left-4 bg-white rounded-lg shadow-lg p-4 max-w-xs z-10">
-            <h2 className="font-bold text-gray-900 mb-2">
-              Country Dataset
-            </h2>
-            <p className="text-sm text-gray-600 mb-3">
-              {SAMPLE_COUNTRY_DATA.length} countries are highlighted with
-              beautiful colors. All others are grayed out.
-            </p>
-            <div className="space-y-2 text-xs">
-              <div className="font-semibold text-gray-700 mb-1">
-                Dataset Countries:
+      {/* Info Panel */}
+      {isLoaded && (
+        <div className="absolute top-4 left-4 bg-white rounded-lg shadow-lg p-4 max-w-xs z-10">
+          <h2 className="font-bold text-gray-900 mb-2">
+            Country Dataset
+          </h2>
+          <p className="text-sm text-gray-600 mb-3">
+            {SAMPLE_COUNTRY_DATA.length} countries are highlighted with
+            beautiful colors. All others are grayed out.
+          </p>
+          <div className="space-y-2 text-xs">
+            <div className="font-semibold text-gray-700 mb-1">
+              Dataset Countries:
+            </div>
+            {SAMPLE_COUNTRY_DATA.slice(0, 6).map((country) => (
+              <div key={country.countryCode} className="flex items-center gap-2">
+                <div
+                  className="w-3 h-3 rounded"
+                  style={{ backgroundColor: country.color }}
+                />
+                <span className="text-gray-700">{country.countryName}</span>
               </div>
-              {SAMPLE_COUNTRY_DATA.slice(0, 6).map((country) => (
-                <div key={country.countryCode} className="flex items-center gap-2">
-                  <div
-                    className="w-3 h-3 rounded"
-                    style={{ backgroundColor: country.color }}
-                  />
-                  <span className="text-gray-700">{country.countryName}</span>
-                </div>
-              ))}
-              <div className="text-gray-400 mt-2 italic">
-                + {SAMPLE_COUNTRY_DATA.length - 6} more countries
-              </div>
-              <div className="flex items-center gap-2 mt-3 pt-2 border-t border-gray-200">
-                <div className="w-3 h-3 rounded bg-gray-400" />
-                <span className="text-gray-500">Other countries</span>
-              </div>
+            ))}
+            <div className="text-gray-400 mt-2 italic">
+              + {SAMPLE_COUNTRY_DATA.length - 6} more countries
+            </div>
+            <div className="flex items-center gap-2 mt-3 pt-2 border-t border-gray-200">
+              <div className="w-3 h-3 rounded bg-gray-400" />
+              <span className="text-gray-500">Other countries</span>
             </div>
           </div>
-        )}
+        </div>
+      )}
     </main>
   );
 }

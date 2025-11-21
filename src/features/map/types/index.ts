@@ -2,7 +2,7 @@
  * Central export point for all TypeScript types
  *
  * Import types from this file throughout the application:
- * import type { MapConfig, DatasetConfig } from '@/types';
+ * import type { MapConfig, DatasetConfig } from '@/features/map/types';
  */
 
 // Map types

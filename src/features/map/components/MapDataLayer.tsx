@@ -8,8 +8,8 @@
 
 import { useEffect } from "react";
 import type { Map as MapboxMap } from "mapbox-gl";
-import type { DatasetConfig } from "@/types";
-import { useMapDataset } from "@/hooks";
+import type { DatasetConfig } from "@/features/map/types";
+import { useMapDataset } from "@/features/map/hooks";
 
 interface MapDataLayerProps {
   map: MapboxMap | null;

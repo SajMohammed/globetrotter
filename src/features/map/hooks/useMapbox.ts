@@ -13,7 +13,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
-import type { MapConfig, MapLoadingState, MapError } from "@/types";
+import type { MapConfig, MapLoadingState, MapError } from "@/features/map/types";
 import { validateViewport } from "@/utils/mapbox";
 
 /**
