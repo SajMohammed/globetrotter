@@ -4,9 +4,11 @@
  * Tailwind directives and global CSS variables.
  */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@source "../features";
+@source "../components";
+@source "../app";
 
 :root {
   --background: #ffffff;
