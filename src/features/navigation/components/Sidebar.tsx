@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Home, Map, Compass, User, Settings, LogOut } from 'lucide-react';
+import { Home, Map, Compass, User, Settings, LogOut, Plane } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const NAV_ITEMS = [
@@ -7,6 +7,7 @@ const NAV_ITEMS = [
     { icon: Map, label: 'My Map', href: '/map' },
     { icon: Compass, label: 'Explore', href: '/explore' },
     { icon: User, label: 'Profile', href: '/profile' },
+    { icon: Plane, label: 'Passport', href: '/passport' },
 ];
 
 const BOTTOM_ITEMS = [

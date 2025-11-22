@@ -18,8 +18,8 @@ export function WorldMap() {
     const mapConfig = useMemo(
         () =>
             createDefaultMapConfig({
-                // Using light-v11 for neutral background
-                style: 'mapbox://styles/mapbox/light-v11',
+                // Using default streets style
+                style: 'mapbox://styles/mapbox/streets-v12',
                 // Disable some interactions for a background map if desired, 
                 // but keeping them enabled as per "interactive background" requirement
                 interactive: true,
@@ -34,6 +34,7 @@ export function WorldMap() {
 
     // Highlight countries in dataset with beautiful colors, gray out others
     // This preserves the "existing world view" logic
+    /* 
     useCountryColors(map, isLoaded, {
         countryCodes: getCountryCodes(),
         colorExpression: createCountryColorExpression(),
@@ -41,6 +42,7 @@ export function WorldMap() {
         grayOpacity: 0.85,
         colorOpacity: 0.8,
     });
+    */
 
     return (
         <div className="h-full w-full">
