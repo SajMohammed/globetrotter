@@ -44,7 +44,13 @@ export const MOCK_PASSPORT_DATA = {
         flagCount: 22
     },
     activityHeatmap: Array.from({ length: 52 }).map((_, i) => {
-        const intensity = Math.random();
+        // Deterministic pseudo-random based on index
+        const seededRandom = (seed: number) => {
+            const x = Math.sin(seed) * 10000;
+            return x - Math.floor(x);
+        };
+
+        const intensity = seededRandom(i + 1); // Use index as seed
         // Mock some specific data for tooltips
         const weeks = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         const month = weeks[Math.floor(i / 4.5)];
