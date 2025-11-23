@@ -8,17 +8,19 @@ import { StampsPage } from './StampsPage';
 import { StatsPage } from './StatsPage';
 import { TiltContainer } from './TiltContainer';
 import { FoilElement } from './FoilElement';
+import { MOCK_PASSPORT_DATA } from '../data/mockPassportData';
 
 // Cover Component
-function PassportCover({ isOpen, onClick }: { isOpen: boolean; onClick: () => void }) {
+function PassportCover({ isOpen, onClick, zIndex }: { isOpen: boolean; onClick: () => void; zIndex: number }) {
     return (
         <motion.div
             className={cn(
-                "absolute inset-0 z-50 h-full w-full cursor-pointer rounded-r-md shadow-2xl",
+                "absolute inset-0 h-full w-full cursor-pointer rounded-r-md shadow-2xl",
                 "origin-left [transform-style:preserve-3d]"
             )}
+            style={{ zIndex }}
             animate={{ rotateY: isOpen ? -180 : 0 }}
-            transition={{ duration: 1.2, type: "spring", damping: 18, stiffness: 80 }}
+            transition={{ duration: 1.2, type: "spring", damping: 18, stiffness: 60 }}
             onClick={onClick}
         >
             {/* Front of Cover */}
@@ -82,13 +84,17 @@ function PassportSheet({
     back,
     index,
     isFlipped,
-    zIndex
+    zIndex,
+    onAnimationStart,
+    onAnimationComplete
 }: {
     front: React.ReactNode;
     back: React.ReactNode;
     index: number;
     isFlipped: boolean;
     zIndex: number;
+    onAnimationStart?: () => void;
+    onAnimationComplete?: () => void;
 }) {
     return (
         <motion.div
@@ -98,7 +104,9 @@ function PassportSheet({
                 transformStyle: 'preserve-3d',
             }}
             animate={{ rotateY: isFlipped ? -180 : 0 }}
-            transition={{ duration: 1.2, delay: index * 0.05, type: "spring", damping: 18, stiffness: 80 }}
+            transition={{ duration: 1.0, type: "spring", damping: 20, stiffness: 60 }}
+            onAnimationStart={onAnimationStart}
+            onAnimationComplete={onAnimationComplete}
         >
             {/* Front Page */}
             <div className="absolute inset-0 h-full w-full [backface-visibility:hidden] shadow-sm overflow-hidden rounded-r-sm">
@@ -121,75 +129,171 @@ function PassportSheet({
 export function PassportBook() {
     const [isOpen, setIsOpen] = useState(false);
     const [flippedIndex, setFlippedIndex] = useState(-1);
+    const [animatingIndex, setAnimatingIndex] = useState<number | null>(null);
+    const [coverZIndex, setCoverZIndex] = useState(50);
+
+    // Pagination Logic
+    const STAMPS_PER_PAGE = 6;
+    const totalStamps = MOCK_PASSPORT_DATA.stamps.length;
+
+    const stampChunks = [];
+    for (let i = 0; i < totalStamps; i += STAMPS_PER_PAGE) {
+        stampChunks.push(MOCK_PASSPORT_DATA.stamps.slice(i, i + STAMPS_PER_PAGE));
+    }
+
+    // New Page Order: Identity -> Stats -> Stamps...
+    const pages = [
+        <IdentityPage key="identity" profile={MOCK_PASSPORT_DATA.userProfile} />,
+        <StatsPage key="stats" stats={MOCK_PASSPORT_DATA.travelStats} heatmap={MOCK_PASSPORT_DATA.activityHeatmap} />,
+        ...stampChunks.map((chunk, i) => (
+            <StampsPage key={`stamps-${i}`} stamps={chunk} pageNumber={i + 3} />
+        )),
+        <div key="notes" className="flex h-full w-full items-center justify-center bg-[#fdfbf7] p-8">
+            <div className="text-center font-serif text-slate-400">Notes & Endorsements</div>
+        </div>
+    ];
+
+    // Group pages into Sheets
+    const sheets = [];
+    for (let i = 0; i < pages.length; i += 2) {
+        sheets.push({
+            front: pages[i],
+            back: pages[i + 1] || <div className="bg-[#fdfbf7] h-full w-full" />
+        });
+    }
+
+    const totalSheets = sheets.length;
 
     const toggleBook = () => {
-        setIsOpen(!isOpen);
-        if (!isOpen) {
-            setFlippedIndex(0);
+        const newIsOpen = !isOpen;
+        setIsOpen(newIsOpen);
+
+        if (newIsOpen) {
+            // Opening: Start with High Z (Cover on top), switch to Low Z halfway
+            setCoverZIndex(50);
+            setTimeout(() => setCoverZIndex(0), 600); // Half of 1.2s duration
+            setFlippedIndex(-1);
         } else {
+            // Closing: Start with Low Z (Cover behind), switch to High Z halfway
+            setCoverZIndex(0);
+            setTimeout(() => setCoverZIndex(50), 600);
             setFlippedIndex(-1);
         }
     };
 
-    const flipPage = () => {
+    const nextPage = () => {
         if (!isOpen) return;
-        if (flippedIndex < 1) {
+        if (flippedIndex < totalSheets - 1) {
             setFlippedIndex(flippedIndex + 1);
         } else {
+            // Close book from last page
             setIsOpen(false);
+            setCoverZIndex(0);
+            setTimeout(() => setCoverZIndex(50), 600);
+            setFlippedIndex(-1);
+        }
+    };
+
+    const prevPage = () => {
+        if (!isOpen) return;
+        if (flippedIndex >= 0) {
+            setFlippedIndex(flippedIndex - 1);
+        } else {
+            // Close book from first page (Identity)
+            setIsOpen(false);
+            setCoverZIndex(0);
+            setTimeout(() => setCoverZIndex(50), 600);
             setFlippedIndex(-1);
         }
     };
 
     return (
         <div className="flex h-full w-full items-center justify-center bg-slate-200 p-8 perspective-[2000px]">
-            <TiltContainer className="relative h-[600px] w-[420px]" tiltIntensity={10} glareIntensity={0.2}>
-                {/* Back Cover (Static base) */}
-                <div className="absolute inset-0 rounded-r-md bg-[#1a2b4b] shadow-2xl translate-z-[-4px]" />
+            <motion.div
+                animate={{ x: isOpen ? '50%' : '0%' }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+                className="relative"
+            >
+                <TiltContainer className="relative h-[600px] w-[420px]" tiltIntensity={10} glareIntensity={0.2}>
+                    {/* Back Cover (Static base) */}
+                    <div className="absolute inset-0 rounded-r-md bg-[#1a2b4b] shadow-2xl translate-z-[-4px]" />
 
-                {/* Pages Stack Effect (Thickness) */}
-                <div className="absolute right-0 top-1 bottom-1 w-3 bg-white rounded-r-sm shadow-sm translate-x-[2px] translate-z-[-1px]" />
-                <div className="absolute right-0 top-2 bottom-2 w-3 bg-white rounded-r-sm shadow-sm translate-x-[4px] translate-z-[-2px]" />
+                    {/* Pages Stack Effect (Thickness) */}
+                    {Array.from({ length: totalSheets }).map((_, i) => (
+                        <div
+                            key={i}
+                            className="absolute right-0 top-1 bottom-1 w-3 bg-white rounded-r-sm shadow-sm"
+                            style={{
+                                transform: `translateX(${i * 0.5}px) translateZ(${-i}px)`
+                            }}
+                        />
+                    ))}
 
-                {/* Pages */}
-                <PassportSheet
-                    index={1}
-                    isFlipped={flippedIndex >= 1}
-                    zIndex={flippedIndex >= 1 ? 20 : 10}
-                    front={<StatsPage />}
-                    back={
-                        <div className="flex h-full w-full items-center justify-center bg-[#fdfbf7] p-8">
-                            <div className="text-center font-serif text-slate-400">Notes & Endorsements</div>
-                        </div>
-                    }
-                />
+                    {/* Pages */}
+                    {sheets.map((sheet, index) => {
+                        const isFlipped = flippedIndex >= index;
 
-                <PassportSheet
-                    index={0}
-                    isFlipped={flippedIndex >= 0}
-                    zIndex={flippedIndex >= 0 ? 30 : 20}
-                    front={<IdentityPage />}
-                    back={<StampsPage />}
-                />
+                        // Z-Index Logic:
+                        let zIndex;
+                        if (animatingIndex === index) {
+                            zIndex = 100;
+                        } else {
+                            zIndex = isFlipped ? 10 + index : 10 + (totalSheets - index);
+                        }
 
-                {/* Cover */}
-                <PassportCover isOpen={isOpen} onClick={toggleBook} />
+                        return (
+                            <PassportSheet
+                                key={index}
+                                index={index}
+                                isFlipped={isFlipped}
+                                zIndex={zIndex}
+                                front={sheet.front}
+                                back={sheet.back}
+                                onAnimationStart={() => setAnimatingIndex(index)}
+                                onAnimationComplete={() => setAnimatingIndex(null)}
+                            />
+                        );
+                    })}
 
-                {/* Controls */}
-                {isOpen && (
-                    <div
-                        className="absolute -right-20 top-1/2 z-50 flex flex-col gap-2 -translate-y-1/2"
-                    >
-                        <button
-                            onClick={flipPage}
-                            className="h-14 w-14 rounded-full bg-white/90 text-slate-800 shadow-xl hover:bg-white hover:scale-110 flex items-center justify-center transition-all"
-                            title="Flip Page"
-                        >
-                            ➡️
-                        </button>
-                    </div>
-                )}
-            </TiltContainer>
+                    {/* Cover */}
+                    <PassportCover
+                        isOpen={isOpen}
+                        onClick={toggleBook}
+                        zIndex={coverZIndex}
+                    />
+
+                    {/* Controls */}
+                    {isOpen && (
+                        <>
+                            {/* Previous Page Button */}
+                            <div
+                                className="absolute -left-[480px] top-1/2 z-50 flex flex-col gap-2 -translate-y-1/2"
+                            >
+                                <button
+                                    onClick={prevPage}
+                                    className="h-14 w-14 rounded-full bg-white/90 text-slate-800 shadow-xl hover:bg-white hover:scale-110 flex items-center justify-center transition-all"
+                                    title="Previous Page"
+                                >
+                                    ⬅️
+                                </button>
+                            </div>
+
+                            {/* Next Page Button */}
+                            <div
+                                className="absolute -right-20 top-1/2 z-50 flex flex-col gap-2 -translate-y-1/2"
+                            >
+                                <button
+                                    onClick={nextPage}
+                                    className="h-14 w-14 rounded-full bg-white/90 text-slate-800 shadow-xl hover:bg-white hover:scale-110 flex items-center justify-center transition-all"
+                                    title="Next Page"
+                                >
+                                    ➡️
+                                </button>
+                            </div>
+                        </>
+                    )}
+                </TiltContainer>
+            </motion.div>
 
             <div className="absolute bottom-8 font-serif text-slate-500 italic">
                 {isOpen ? "Tap the arrow to turn the page." : "Tap the passport to open."}
