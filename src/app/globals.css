@@ -4,32 +4,20 @@
  * Tailwind directives and global CSS variables.
  */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@keyframes foil-shimmer {
-  0% {
-    background-position: 0% 50%;
-  }
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
 
-  50% {
-    background-position: 100% 50%;
-  }
+  /* Custom spacing for map controls */
+  --spacing-map-control: 10px;
 
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: 200% 0;
-  }
-
-  100% {
-    background-position: -200% 0;
-  }
+  /* Z-index scale for layering */
+  --z-index-map: 0;
+  --z-index-map-controls: 10;
+  --z-index-map-popup: 20;
+  --z-index-modal: 30;
 }
 
 @source "../features";

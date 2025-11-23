@@ -51,6 +51,7 @@ export interface MapConfig {
   interactive?: boolean;
   attributionControl?: boolean;
   logoPosition?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  projection?: string | { name: string;[key: string]: any };
 }
 
 /**

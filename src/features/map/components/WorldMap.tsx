@@ -4,11 +4,7 @@ import { useState, useMemo, useCallback } from 'react';
 import type { Map as MapboxMap } from 'mapbox-gl';
 import { Map, MapControls } from '@/features/map/components';
 import { createDefaultMapConfig } from '@/utils/mapbox';
-import { useCountryColors } from '@/features/map/hooks/useCountryColors';
-import {
-    getCountryCodes,
-    createCountryColorExpression,
-} from '@/data/sampleCountryData';
+
 
 export function WorldMap() {
     const [map, setMap] = useState<MapboxMap | null>(null);

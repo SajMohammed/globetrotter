@@ -106,6 +106,7 @@ export function useMapbox(config: MapConfig): UseMapboxReturn {
         interactive: config.interactive,
         attributionControl: config.attributionControl,
         logoPosition: config.logoPosition,
+        projection: config.projection as any, // Cast to any to avoid type issues with older types
       });
 
       // Store reference

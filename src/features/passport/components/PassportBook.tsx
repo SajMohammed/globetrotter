@@ -82,7 +82,7 @@ function PassportCover({ isOpen, onClick, zIndex }: { isOpen: boolean; onClick: 
 function PassportSheet({
     front,
     back,
-    index,
+
     isFlipped,
     zIndex,
     onAnimationStart,
@@ -90,7 +90,7 @@ function PassportSheet({
 }: {
     front: React.ReactNode;
     back: React.ReactNode;
-    index: number;
+
     isFlipped: boolean;
     zIndex: number;
     onAnimationStart?: () => void;
@@ -244,7 +244,7 @@ export function PassportBook() {
                         return (
                             <PassportSheet
                                 key={index}
-                                index={index}
+
                                 isFlipped={isFlipped}
                                 zIndex={zIndex}
                                 front={sheet.front}

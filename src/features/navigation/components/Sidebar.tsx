@@ -1,10 +1,11 @@
 import Link from 'next/link';
-import { Home, Map, Compass, User, Settings, LogOut, Plane } from 'lucide-react';
+import { Home, Map, Compass, User, Settings, LogOut, Plane, Briefcase } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const NAV_ITEMS = [
     { icon: Home, label: 'Dashboard', href: '/' },
     { icon: Map, label: 'My Map', href: '/map' },
+    { icon: Briefcase, label: 'Trips', href: '/trips' },
     { icon: Compass, label: 'Explore', href: '/explore' },
     { icon: User, label: 'Profile', href: '/profile' },
     { icon: Plane, label: 'Passport', href: '/passport' },
